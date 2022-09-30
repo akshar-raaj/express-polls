@@ -1,9 +1,14 @@
 const express = require('express')
+const {Question} = require('./models')
+const pug = require('pug')
 const app = express()
 const port = 3000
 
 app.get('/polls/', (req, res) => {
-  res.send(`Hello, world. You're at the polls index.`)
+  let questions = Question.findAll()
+  let questionTemplate = pug.compileFile('templates/index.pug')
+  let body = questionTemplate({questions: questions})
+  res.send(body)
 })
 
 app.get('/polls/:pollId/', (req, res) => {
