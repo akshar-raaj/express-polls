@@ -12,7 +12,11 @@ app.get('/polls/', (req, res) => {
 })
 
 app.get('/polls/:pollId/', (req, res) => {
-  res.send(`You're looking at question ${req.params.pollId}`)
+  // Add support for 404
+  let question = Question.findAll({where: {id: req.params.pollId}})
+  let questionTemplate = pug.compileFile('templates/detail.pug')
+  let body = questionTemplate({question: question})
+  res.send(body)
 })
 
 app.get('/polls/:pollId/results/', (req, res) => {
